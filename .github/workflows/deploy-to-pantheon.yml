@@ -1,0 +1,28 @@
+name: Auto Deploy to Pantheon
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PANTHEON_DEV_SITE_ENV_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 2222 codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0.drush.in >> ~/.ssh/known_hosts
+
+      - name: Deploy to Pantheon
+        run: |
+          git config --global user.email "john.k.deo02@gmail.com"
+          git config --global user.name "john"
+          git remote add pantheon ssh://codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0@codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0.drush.in:2222/~/repository.git
+          git push pantheon main
