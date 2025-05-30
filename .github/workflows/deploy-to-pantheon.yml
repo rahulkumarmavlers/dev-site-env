@@ -26,5 +26,11 @@ jobs:
         run: |
           git config --global user.email "rahul.kumar@mavlers.com"
           git config --global user.name "rahul"
-          git remote add pantheon ssh://codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0@codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0.drush.in:2222/~/repository.git
-          git push pantheon main
+          # Add or update remote
+          if git remote | grep pantheon; then
+            git remote set-url pantheon ssh://codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0@codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0.drush.in:2222/~/repository.git
+          else
+            git remote add pantheon ssh://codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0@codeserver.dev.cac39cc1-db4d-4b12-b0c3-bc38f73f60d0.drush.in:2222/~/repository.git
+          fi
+          # Push to Pantheon (change main:master if needed)
+          git push pantheon main:master
