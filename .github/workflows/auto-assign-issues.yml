@@ -1,0 +1,22 @@
+name: Auto Assign New Issues
+
+on:
+  issues:
+    types:
+      - opened
+      - labeled
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Assign issue based on labels
+        uses: actions-ecosystem/action-assign-issue@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Replace these with the GitHub usernames or teams you want to assign
+          assignees: |
+            bug: rahulkumarmavlers
+            feature-request: rahulkumarmavlers
+            documentation: rahulkumarmavlers
